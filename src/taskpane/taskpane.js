@@ -14,7 +14,17 @@ Office.onReady((info) => {
     if (Office.context.requirements.isSetSupported("Mailbox", "1.5")) {
       // Add a custom category
       Office.context.mailbox.masterCategories.addAsync(
-        [{ displayName: "My Custom Category", color: "Preset0" }], // 'Preset0' is a predefined color
+        [{ displayName: "Original", color: "Preset0" }], // 'Preset0' is a predefined color
+        function (result) {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            console.log("Custom category added successfully.");
+          } else {
+            console.error("Failed to add custom category:", result.error.message);
+          }
+        }
+      );
+      Office.context.mailbox.masterCategories.addAsync(
+        [{ displayName: "Duplicate", color: "Preset3" }], // 'Preset0' is a predefined color
         function (result) {
           if (result.status === Office.AsyncResultStatus.Succeeded) {
             console.log("Custom category added successfully.");
@@ -27,26 +37,28 @@ Office.onReady((info) => {
       console.error("Required Mailbox permission set is not supported.");
     }
 
-    // Office.context.mailbox.masterCategories.getAsync(function (asyncResult) {
-    //   if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-    //     const masterCategories = asyncResult.value;
-    //     if (masterCategories && masterCategories.length > 0) {
-    //       // Grab the first category from the master list.
-    //       const categoryToAdd = [masterCategories[0].displayName];
-    //       Office.context.mailbox.item.categories.addAsync(categoryToAdd, function (asyncResult) {
-    //         if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-    //           console.log(`Successfully assigned category '${categoryToAdd}' to item.`);
-    //         } else {
-    //           console.log("categories.addAsync call failed with error: " + asyncResult.error.message);
-    //         }
-    //       });
-    //     } else {
-    //       console.log("There are no categories in the master list on this mailbox. You can add categories using Office.context.mailbox.masterCategories.addAsync.");
-    //     }
-    //   } else {
-    //     console.error(asyncResult.error);
-    //   }
-    // });
+    Office.context.mailbox.masterCategories.getAsync(function (asyncResult) {
+      if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+        const masterCategories = asyncResult.value;
+        if (masterCategories && masterCategories.length > 0) {
+          // Grab the first category from the master list.
+          // const categoryToAdd = [masterCategories[0].displayName];
+          const categoryToAdd = ["Original"];
+
+          Office.context.mailbox.item.categories.addAsync(categoryToAdd, function (asyncResult) {
+            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+              console.log(`Successfully assigned category '${categoryToAdd}' to item.`);
+            } else {
+              console.log("categories.addAsync call failed with error: " + asyncResult.error.message);
+            }
+          });
+        } else {
+          console.log("There are no categories in the master list on this mailbox. You can add categories using Office.context.mailbox.masterCategories.addAsync.");
+        }
+      } else {
+        console.error(asyncResult.error);
+      }
+    });
     // console.log("test")
     Office.context.mailbox.addHandlerAsync(Office.EventType.ItemSend, function (event) {
       console.log("ItemSend event triggered");
