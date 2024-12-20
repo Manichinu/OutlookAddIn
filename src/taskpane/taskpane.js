@@ -26,7 +26,7 @@ Office.onReady((info) => {
     if (Office.context.requirements.isSetSupported("Mailbox", "1.5")) {
       // Add a custom category
       Office.context.mailbox.masterCategories.addAsync(
-        [{ displayName: "Original", color: "Preset0" }], // 'Preset0' is a predefined color
+        [{ displayName: "Original", color: "Preset4" }], // 'Preset0' is a predefined color
         function (result) {
           if (result.status === Office.AsyncResultStatus.Succeeded) {
             console.log("Custom category added successfully.");
@@ -36,7 +36,7 @@ Office.onReady((info) => {
         }
       );
       Office.context.mailbox.masterCategories.addAsync(
-        [{ displayName: "Duplicate", color: "Preset3" }], // 'Preset0' is a predefined color
+        [{ displayName: "Duplicate", color: "Preset0" }], 
         function (result) {
           if (result.status === Office.AsyncResultStatus.Succeeded) {
             console.log("Custom category added successfully.");
@@ -99,6 +99,19 @@ function addOriginalFlag() {
 
         Office.context.mailbox.item.categories.addAsync(categoryToAdd, function (asyncResult) {
           if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+            const item = Office.context.mailbox.item;
+            console.log("Data : ", item)
+            item.body.getAsync(Office.CoercionType.Html, function (result) {
+              if (result.status === Office.AsyncResultStatus.Succeeded) {
+                // Successfully retrieved the body content
+                const emailBody = result.value;
+                var HTMLContent = new DOMParser().parseFromString(emailBody, 'text/html');
+                var TextContent = HTMLContent.body.textContent || HTMLContent.body.innerText || ""
+                console.log("Body : ", TextContent)
+              } else {
+                console.error("Failed to retrieve the email body:", result.error.message);
+              }
+            });
             console.log(`Successfully assigned category '${categoryToAdd}' to item.`);
           } else {
             console.log("categories.addAsync call failed with error: " + asyncResult.error.message);
