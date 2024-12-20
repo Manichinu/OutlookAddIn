@@ -9,6 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Contoso Task Pane Add-in</title>
+    <script type="text/javascript" src="taskpane.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
@@ -19,7 +21,6 @@
 
     <!-- Template styles -->
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="taskpane.js"></script>
 
 </head>
 
@@ -56,6 +57,7 @@
         <p><label id="item-subject"></label></p>
         <div id="email-message-container">
         </div>
+        <button id="check">Classify the email</button>
     </main>
 </body>
 
