@@ -43,12 +43,12 @@
     </Requirements>
     <Hosts>
       <Host xsi:type="MailHost">
-        <DesktopFormFactor>
+        <DesktopFormFactor>       
           <FunctionFile resid="Commands.Url"/>
           <!-- Add EventHandlers for automatic execution -->
-      <!-- <ExtensionPoint xsi:type="MessageRead">
-          <LaunchEvent Type="OnMessageRead" FunctionName="onMessageRead"/>
-        </ExtensionPoint> -->
+        <!-- <ExtensionPoint xsi:type="MessageRead">
+            <LaunchEvent Type="OnMessageRead" FunctionName="onMessageRead"/>
+          </ExtensionPoint> -->
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
             <OfficeTab id="TabDefault">
               <Group id="msgReadGroup">

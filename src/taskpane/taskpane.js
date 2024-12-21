@@ -12,16 +12,11 @@ $(document).ready(function () {
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
+    getUserDetails()
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("run").onclick = run;
 
-    // const item = Office.context.mailbox.item;
-    // // Check if the email is received and not from a flagged source
-    // if (item && item.itemType === Office.MailboxEnums.ItemType.Message) {
-    //   // Flag the email as "Original" by adding a category
-    //   addOriginalFlag(item);
-    // }
     // Check if the mailbox supports the necessary API
     if (Office.context.requirements.isSetSupported("Mailbox", "1.5")) {
       // Add a custom category
@@ -36,7 +31,7 @@ Office.onReady((info) => {
         }
       );
       Office.context.mailbox.masterCategories.addAsync(
-        [{ displayName: "Duplicate", color: "Preset0" }], 
+        [{ displayName: "Duplicate", color: "Preset0" }],
         function (result) {
           if (result.status === Office.AsyncResultStatus.Succeeded) {
             console.log("Custom category added successfully.");
@@ -146,13 +141,7 @@ function showEmailMessage() {
     console.error("Could not find the email message container.");
   }
 }
-
-
-export async function run() {
-  /**
-   * Insert your Outlook code here
-   */
-
+function run() {
   const item = Office.context.mailbox.item;
   let insertAt = document.getElementById("item-subject");
   let label = document.createElement("b").appendChild(document.createTextNode("Subject: "));
@@ -160,5 +149,9 @@ export async function run() {
   insertAt.appendChild(document.createElement("br"));
   insertAt.appendChild(document.createTextNode(item.subject));
   insertAt.appendChild(document.createElement("br"));
-  showEmailMessage();
+}
+function getUserDetails() {
+  // Get the user's profile
+  const userProfile = Office.context.mailbox.userProfile;
+  console.log("Logged-in User Details: ", userProfile);
 }
